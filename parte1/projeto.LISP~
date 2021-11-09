@@ -7,8 +7,8 @@
 (defun iniciar-jogo () 
   "Carrega os ficheiros e chama o menu pricipal"
   (progn 
-    (carregar-ficheiros)
-    ;;(menu-inicial (append (ler-problemas) (list (list (tabuleiro-aleatorio) 1000))))
+    ;;(carregar-ficheiros)
+    (menu-inicial (ler-problemas))
   )
 )
 
@@ -21,7 +21,7 @@
 (defun menu-inicial (problemas)
   "Menu Principal"
   (progn
-    (format t "~% ~% ~%Bem vindo ~%
+    (format t "~% ~% ~%Bem Vindo - Blokus Uno ~%
              1 - Jogar
              2 - Sair ~%")
     (let ((opcao (read)))
@@ -68,7 +68,7 @@
 
 (defun imprimir-problema (index problema)
   "Imprime o tabuleiro do problema"
-  (format t "~% ~% ~d - ~A ~%     ~A~%     ~A~%     ~A~%     ~A~%     ~A~%     ~A~%     Objetivo ~d pontos" 
+  (format t "~% ~% ~d - ~A ~%     ~A~%     ~A~%     ~A~%     ~A~%     ~A~%     ~A~%     ~A~%     ~A~%     ~A~%     ~A~%     ~A~%     ~A~%     ~A~%     Objetivo ~d pontos" 
           index 
           (nth 0 (car problema)) 
           (nth 1 (car problema)) 
@@ -77,47 +77,20 @@
           (nth 4 (car problema)) 
           (nth 5 (car problema)) 
           (nth 6 (car problema))
+          (nth 7 (car problema))
+          (nth 9 (car problema))
+          (nth 10 (car problema))
+          (nth 11 (car problema))
+          (nth 12 (car problema))
+          (nth 13 (car problema))
           (nth 1 problema))
 )
 
-(defun selecionar-algoritmo (problema)
-  "Menu Algoritmos"
-  (progn 
-    (algoritmos-opcoes-menu)
 
-    (let ((opcao (read)))
-
-      (cond ((OR (not (numberp opcao)) (< opcao 1) (> opcao 3)) 
-               (progn
-                 (format t "~% ~% >> Resposta invalida << ~% ~%")
-                 (selecionar-algoritmo problema)
-               ))
-            (t (eval-algoritmo problema (nome-algoritmo opcao)))))
-  )
-)
-
-(defun algoritmos-opcoes-menu()
-  "Opções do menu algoritmos"
-  (format t " > Escolha um algoritmo para aplicar na resolucao do problema: ~% ~% 1 - BFS ~% 2 - DFS ~% 3 - A* ~% ~%")
-)
-
-(defun pedir-profundidade() 
-  "Pede a profundidade maxima"
-  (progn 
-    (format t " > Introduza a profundidade maximo do algortmo ~%")
-    (let ((opcao (read)))
-      (cond ((OR (not (numberp opcao)) (< opcao 1))
-               (progn 
-                 (format t "~% ~% >> Tem que ser numero positivo << ~% ~%")
-                 (pedir-profundidade)
-               ))
-            (t opcao)))
-  )
-)
 
 ;;;;;;;;;; PROBLEMAS INPUT ;;;;;;;;;; 
 (defun ler-problemas ()
-  "Abre o ficheiro problemas.dat e constroi os problemas. Retorna erro se nao encontrar o ficheiro"
+  "Abre o ficheiro problemas.dat e constrai os problemas. Retorna erro se nao encontrar o ficheiro"
   (with-open-file (file 
                    (concatenate 'string (diretorio) "/problemas.dat")
                    :direction :input
@@ -153,8 +126,15 @@
       (read-from-string (nth 4 problema))
       (read-from-string (nth 5 problema))
       (read-from-string (nth 6 problema))
+      (read-from-string (nth 7 problema))
+      (read-from-string (nth 8 problema))
+      (read-from-string (nth 9 problema))
+      (read-from-string (nth 10 problema))
+      (read-from-string (nth 11 problema))
+      (read-from-string (nth 12 problema))
+      (read-from-string (nth 13 problema))
       )
-     (read-from-string (nth 7 problema))
+     (read-from-string (nth 14 problema))
      )
   )
 )

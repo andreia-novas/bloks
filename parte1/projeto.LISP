@@ -68,7 +68,7 @@
 
 (defun imprimir-problema (index problema)
   "Imprime o tabuleiro do problema"
-  (format t "~% ~% ~d - ~A ~%     ~A~%     ~A~%     ~A~%     ~A~%     ~A~%     ~A~%     ~A~%     ~A~%     ~A~%     ~A~%     ~A~%     ~A~%     ~A~%     Objetivo ~d pontos" 
+  (format t "~% ~% ~d - ~A ~%     ~A~%     ~A~%     ~A~%     ~A~%     ~A~%     ~A~%     ~A~%     ~A~%     ~A~%     ~A~%     ~A~%     ~A~%     ~A~%     Preencher pelo menos ~d casas para ganhar" 
           index 
           (nth 0 (car problema)) 
           (nth 1 (car problema)) 
@@ -78,6 +78,7 @@
           (nth 5 (car problema)) 
           (nth 6 (car problema))
           (nth 7 (car problema))
+          (nth 8 (car problema))
           (nth 9 (car problema))
           (nth 10 (car problema))
           (nth 11 (car problema))
@@ -85,8 +86,6 @@
           (nth 13 (car problema))
           (nth 1 problema))
 )
-
-
 
 ;;;;;;;;;; PROBLEMAS INPUT ;;;;;;;;;; 
 (defun ler-problemas ()
