@@ -1,8 +1,9 @@
 # Manual Tecnico
-## Blokurs
+## Blokus Uno
     Disciplina - Inteligencia Artificial
     Turma - SW-01
     Realizadores - Joana Guerreiro 202001733 | Andreia Novas - 201400498 
+    Docente - 
 ## Índice
 1. Introdução
 2. Arquitetura do sistema
@@ -26,7 +27,7 @@ O ficheiro denominado por **"procura"** tem toda a parte do desenvolvimento de f
 - Algoritmo de Procura do Melhor Primeiro (A*)
 
 ### Puzzle
-O ficheiro denominado por **"puzzle"** tem toda a parte do desenvolvimento referente a tudo o que esteja interligado com o domínio da aplicação, ou seja comandos jogo. Estes comandos têm toda a manipulação da escolha das peças **"A"ou "B" ou "C"**,dos movimentos e validações.
+O ficheiro denominado por **"puzzle"** tem toda a parte do desenvolvimento referente a tudo o que esteja interligado com o domínio da aplicação, toda a manipulação da escolha das peças dos movimentos e validações.
 ### Projeto
 O ficheiro denominado por **"projeto"** tem as restantes funções, como de interação com o utilizador,funções de teste como auxilio aos testes aos algoritmos, iniciar a aplicação e funções de I/O.
 
