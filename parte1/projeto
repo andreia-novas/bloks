@@ -21,7 +21,7 @@
 (defun menu-inicial (problemas)
   "Menu Principal"
   (progn
-    (format t "~% ~% ~%Bem vindo ~%
+    (format t "~% ~% ~%Bem Vindo - Blokus Uno ~%
              1 - Jogar
              2 - Sair ~%")
     (let ((opcao (read)))
@@ -68,7 +68,7 @@
 
 (defun imprimir-problema (index problema)
   "Imprime o tabuleiro do problema"
-  (format t "~% ~% ~d - ~A ~%     ~A~%     ~A~%     ~A~%     ~A~%     ~A~%     ~A~%     ~A~%     ~A~%     ~A~%     ~A~%     ~A~%     ~A~%     ~A~%     ~A~%     Objetivo ~d pontos" 
+  (format t "~% ~% ~d - ~A ~%     ~A~%     ~A~%     ~A~%     ~A~%     ~A~%     ~A~%     ~A~%     ~A~%     ~A~%     ~A~%     ~A~%     ~A~%     ~A~%     Objetivo ~d pontos" 
           index 
           (nth 0 (car problema)) 
           (nth 1 (car problema)) 
