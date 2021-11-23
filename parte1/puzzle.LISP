@@ -209,7 +209,7 @@
 (defun procurar-coordenadas-possiveis (tabuleiro &optional (y 0))
   (cond
     ((= y (comprimento-tabuleiro tabuleiro)) NIL)
-    (t (cons (procurar-coordenadas-possiveis-linha tabuleiro (linha y tabuleiro) y)(procurar-coordenadas-possiveis tabuleiro (1+ y))))
+    (t (cons (procurar-coordenadas-possiveis-linha tabuleiro (linha y tabuleiro) y) (procurar-coordenadas-possiveis tabuleiro (1+ y))))
   )
 )
 
@@ -248,7 +248,7 @@
   (let ((listaCoordenadas (lista-coordenadas-possiveis (no-tabuleiro no))))
     (cond
        ((null listaCoordenadas) NIL)
-       (t (mapcar #'(lambda (coordenada)(remover-se #'(lambda(valor)(null valor))
+       (t (mapcar #'(lambda (coordenada) (remover-se #'(lambda (valor) (null valor))
                       (mapcar #'(lambda (operador) (funcall operador no coordenada valor)) 
         (lista-operadores)))) listaCoordenadas))
     )
