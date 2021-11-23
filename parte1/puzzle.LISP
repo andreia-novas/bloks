@@ -25,20 +25,20 @@
 )
 
 ;; criar-no
-(defun criar-no (tabuleiro minCasas pecas noPai &optional (jogador 0))
-  (list (list tabuleiro minCasas) (list pecas jogador) noPai)
+(defun criar-no (tabuleiro casasPreenchidas pecas noPai &optional (jogador 0))
+  (list (list tabuleiro casasPreenchidas (no-min-casas noPai)) (list pecas jogador) noPai)
 )
 
 ;; no-teste
 (defun no-teste ()
-  (list (list (tabuleiro-vazio) 72) '((10 10 15) 0) NIL)
+  (list (list (tabuleiro-vazio) 0 72) '((10 10 15) 0) NIL)
 )
 
 ;; no-inicial
 ;; teste: (no-inicial)
 (defun no-inicial (&optional (tabuleiro (tabuleiro-vazio)) (minCasas 72))
   "Define um no inical do problema"
-  (list (list tabuleiro minCasas) '((10 10 15) 0) NIL)
+  (list (list tabuleiro 0 minCasas) '((10 10 15) 0) NIL)
 )
 
 ;; no-pai 
@@ -51,9 +51,14 @@
   (caar no)
 )
 
+;; no-casas-preenchidas
+(defun no-casas-preenchidas (no)
+  (cadar no)
+)
+
 ;; no-min-casas
 (defun no-min-casas (no)
-  (cadar no)
+  (caddar no)
 )
 
 ;; no-pecas
@@ -274,7 +279,7 @@
     (cond
       ((existePecas numPecas) NIL) 
       ((equal (verifcar-espaços-vazios (no-tabuleiro no) coordenada valor) NIL) NIL)
-      (t (criar-no (substituir-valor-tabuleiro (no-tabuleiro no) coordenada valor) (1- (no-min-casas no)) (cons (1- numPecas) (cdr (no-pecas no))) no))
+      (t (criar-no (substituir-valor-tabuleiro (no-tabuleiro no) coordenada valor) (1+ (no-casas-preenchidas no)) (cons (1- numPecas) (cdr (no-pecas no))) no))
     )
   )
 )
@@ -298,7 +303,7 @@
         ((equal (verifcar-espaços-vazios (no-tabuleiro no) (list (1- x) (1- y)) valor) NIL) NIL)
         (t (criar-no
            (substituir-valor-tabuleiro (substituir-valor-tabuleiro (substituir-valor-tabuleiro (substituir-valor-tabuleiro (no-tabuleiro no) coordenada valor) (list (1- x) y) valor) (list x (1- y)) valor) (list (1- x) (1- y)) valor) 
-           (- (no-min-casas no) 4) (cons (car (no-pecas no)) (list (1- numPecas) (car (last (no-pecas no))))) no))
+           (+ (no-casas-preenchidas no) 4) (cons (car (no-pecas no)) (list (1- numPecas) (car (last (no-pecas no))))) no))
      )
   )
 )
@@ -317,7 +322,7 @@
         ((equal (verifcar-espaços-vazios (no-tabuleiro no) (list (1+ x) (1- y)) valor) NIL) NIL)
         (t (criar-no 
                (substituir-valor-tabuleiro (substituir-valor-tabuleiro (substituir-valor-tabuleiro (substituir-valor-tabuleiro (no-tabuleiro no) coordenada valor) (list (1+ x) y) valor) (list x (1- y)) valor) (list (1+ x) (1- y)) valor)
-          (- (no-min-casas no) 4) (cons (car (no-pecas no)) (list (1- numPecas) (car (last (no-pecas no))))) no )
+          (+ (no-casas-preenchidas no) 4) (cons (car (no-pecas no)) (list (1- numPecas) (car (last (no-pecas no))))) no )
          )
         )
     )
@@ -337,7 +342,7 @@
         ((equal (verifcar-espaços-vazios (no-tabuleiro no) (list (1- x) (1+ y)) valor) NIL) NIL)
         (t (criar-no
                (substituir-valor-tabuleiro (substituir-valor-tabuleiro (substituir-valor-tabuleiro (substituir-valor-tabuleiro (no-tabuleiro no) coordenada valor) (list (1- x) y) valor) (list x (1+ y)) valor) (list (1- x) (1+ y)) valor)
-               (- (no-min-casas no) 4) (cons (car (no-pecas no)) (list (1- numPecas) (car (last (no-pecas no))))) no)
+               (+ (no-casas-preenchidas no) 4) (cons (car (no-pecas no)) (list (1- numPecas) (car (last (no-pecas no))))) no)
          )
      )
   )
@@ -357,7 +362,7 @@
         ((equal (verifcar-espaços-vazios (no-tabuleiro no) (list (1+ x) (1+ y)) valor) NIL) NIL)
         (t (criar-no
                 (substituir-valor-tabuleiro (substituir-valor-tabuleiro (substituir-valor-tabuleiro (substituir-valor-tabuleiro (no-tabuleiro no) coordenada valor) (list (1+ x) y) valor) (list x (1+ y)) valor) (list (1+ x) (1+ y)) valor) 
-                (- (no-min-casas no) 4) (cons (car (no-pecas no)) (list (1- numPecas) (car (last (no-pecas no))))) no)
+                (+ (no-casas-preenchidas no) 4) (cons (car (no-pecas no)) (list (1- numPecas) (car (last (no-pecas no))))) no)
          )
       )
    )

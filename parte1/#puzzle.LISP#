@@ -17,7 +17,7 @@
 ;; juntar-lista
 ;; teste: (juntar-lista (tabuleiro-teste))
 (defun juntar-lista (lista)
- "Retorna todos os valores do tabuleiro numa lista só"
+ "Retorna todos os valores do tabuleiro numa lista sÃ³"
   (cond
     ((null lista) '())
     ((append (car lista) (juntar-lista (cdr lista))))
@@ -26,7 +26,7 @@
 
 ;; criar-no
 (defun criar-no (tabuleiro casasPreenchidas pecas noPai &optional (jogador 0))
-  (list (list tabuleiro casasPreenchidas (no-min-casas no)) (list pecas jogador) noPai)
+  (list (list tabuleiro casasPreenchidas (no-min-casas noPai)) (list pecas jogador) noPai)
 )
 
 ;; no-teste
@@ -255,8 +255,8 @@
   )
 )
 
-;; verifcar-espaços-vazios
-(defun verifcar-espaços-vazios (tabuleiro coordenada &optional (valor 1))
+;; verifcar-espaÃ§os-vazios
+(defun verifcar-espaÃ§os-vazios (tabuleiro coordenada &optional (valor 1))
   (let ((y (car (last coordenada)))
         (x (first coordenada)))
      (cond
@@ -278,7 +278,7 @@
   (let ((numPecas (nth 0 (no-pecas no))))
     (cond
       ((existePecas numPecas) NIL) 
-      ((equal (verifcar-espaços-vazios (no-tabuleiro no) coordenada valor) NIL) NIL)
+      ((equal (verifcar-espaÃ§os-vazios (no-tabuleiro no) coordenada valor) NIL) NIL)
       (t (criar-no (substituir-valor-tabuleiro (no-tabuleiro no) coordenada valor) (1+ (no-casas-preenchidas no)) (cons (1- numPecas) (cdr (no-pecas no))) no))
     )
   )
@@ -297,10 +297,10 @@
         (numPecas (nth 1 (no-pecas no))))
      (cond
         ((existePecas numPecas) NIL)
-        ((equal (verifcar-espaços-vazios (no-tabuleiro no) coordenada valor) NIL) NIL)
-        ((equal (verifcar-espaços-vazios (no-tabuleiro no) (list (1- x) y) valor) NIL) NIL)
-        ((equal (verifcar-espaços-vazios (no-tabuleiro no) (list x (1- y)) valor) NIL) NIL)
-        ((equal (verifcar-espaços-vazios (no-tabuleiro no) (list (1- x) (1- y)) valor) NIL) NIL)
+        ((equal (verifcar-espaÃ§os-vazios (no-tabuleiro no) coordenada valor) NIL) NIL)
+        ((equal (verifcar-espaÃ§os-vazios (no-tabuleiro no) (list (1- x) y) valor) NIL) NIL)
+        ((equal (verifcar-espaÃ§os-vazios (no-tabuleiro no) (list x (1- y)) valor) NIL) NIL)
+        ((equal (verifcar-espaÃ§os-vazios (no-tabuleiro no) (list (1- x) (1- y)) valor) NIL) NIL)
         (t (criar-no
            (substituir-valor-tabuleiro (substituir-valor-tabuleiro (substituir-valor-tabuleiro (substituir-valor-tabuleiro (no-tabuleiro no) coordenada valor) (list (1- x) y) valor) (list x (1- y)) valor) (list (1- x) (1- y)) valor) 
            (+ (no-casas-preenchidas no) 4) (cons (car (no-pecas no)) (list (1- numPecas) (car (last (no-pecas no))))) no))
@@ -316,10 +316,10 @@
         (numPecas (nth 1 (no-pecas no))))
      (cond
         ((existePecas numPecas ) NIL)
-        ((equal (verifcar-espaços-vazios (no-tabuleiro no) coordenada valor) NIL) NIL)
-        ((equal (verifcar-espaços-vazios (no-tabuleiro no) (list (1+ x) y) valor) NIL) NIL)
-        ((equal (verifcar-espaços-vazios (no-tabuleiro no) (list x (1- y)) valor) NIL) NIL)
-        ((equal (verifcar-espaços-vazios (no-tabuleiro no) (list (1+ x) (1- y)) valor) NIL) NIL)
+        ((equal (verifcar-espaÃ§os-vazios (no-tabuleiro no) coordenada valor) NIL) NIL)
+        ((equal (verifcar-espaÃ§os-vazios (no-tabuleiro no) (list (1+ x) y) valor) NIL) NIL)
+        ((equal (verifcar-espaÃ§os-vazios (no-tabuleiro no) (list x (1- y)) valor) NIL) NIL)
+        ((equal (verifcar-espaÃ§os-vazios (no-tabuleiro no) (list (1+ x) (1- y)) valor) NIL) NIL)
         (t (criar-no 
                (substituir-valor-tabuleiro (substituir-valor-tabuleiro (substituir-valor-tabuleiro (substituir-valor-tabuleiro (no-tabuleiro no) coordenada valor) (list (1+ x) y) valor) (list x (1- y)) valor) (list (1+ x) (1- y)) valor)
           (+ (no-casas-preenchidas no) 4) (cons (car (no-pecas no)) (list (1- numPecas) (car (last (no-pecas no))))) no )
@@ -336,10 +336,10 @@
         (numPecas (nth 1 (no-pecas no))))
      (cond
         ((existePecas numPecas ) NIL)
-        ((equal (verifcar-espaços-vazios (no-tabuleiro no) coordenada valor) NIL) NIL)
-        ((equal (verifcar-espaços-vazios (no-tabuleiro no) (list (1- x) y) valor) NIL) NIL)
-        ((equal (verifcar-espaços-vazios (no-tabuleiro no) (list x (1+ y)) valor) NIL) NIL)
-        ((equal (verifcar-espaços-vazios (no-tabuleiro no) (list (1- x) (1+ y)) valor) NIL) NIL)
+        ((equal (verifcar-espaÃ§os-vazios (no-tabuleiro no) coordenada valor) NIL) NIL)
+        ((equal (verifcar-espaÃ§os-vazios (no-tabuleiro no) (list (1- x) y) valor) NIL) NIL)
+        ((equal (verifcar-espaÃ§os-vazios (no-tabuleiro no) (list x (1+ y)) valor) NIL) NIL)
+        ((equal (verifcar-espaÃ§os-vazios (no-tabuleiro no) (list (1- x) (1+ y)) valor) NIL) NIL)
         (t (criar-no
                (substituir-valor-tabuleiro (substituir-valor-tabuleiro (substituir-valor-tabuleiro (substituir-valor-tabuleiro (no-tabuleiro no) coordenada valor) (list (1- x) y) valor) (list x (1+ y)) valor) (list (1- x) (1+ y)) valor)
                (+ (no-casas-preenchidas no) 4) (cons (car (no-pecas no)) (list (1- numPecas) (car (last (no-pecas no))))) no)
@@ -356,10 +356,10 @@
         (numPecas (nth 1 (no-pecas no))))
      (cond
         ((existePecas (nth 1 (no-pecas no))) NIL)
-        ((equal (verifcar-espaços-vazios (no-tabuleiro no) coordenada valor) NIL) NIL)
-        ((equal (verifcar-espaços-vazios (no-tabuleiro no) (list (1+ x) y) valor) NIL) NIL)
-        ((equal (verifcar-espaços-vazios (no-tabuleiro no) (list x (1+ y)) valor) NIL) NIL)
-        ((equal (verifcar-espaços-vazios (no-tabuleiro no) (list (1+ x) (1+ y)) valor) NIL) NIL)
+        ((equal (verifcar-espaÃ§os-vazios (no-tabuleiro no) coordenada valor) NIL) NIL)
+        ((equal (verifcar-espaÃ§os-vazios (no-tabuleiro no) (list (1+ x) y) valor) NIL) NIL)
+        ((equal (verifcar-espaÃ§os-vazios (no-tabuleiro no) (list x (1+ y)) valor) NIL) NIL)
+        ((equal (verifcar-espaÃ§os-vazios (no-tabuleiro no) (list (1+ x) (1+ y)) valor) NIL) NIL)
         (t (criar-no
                 (substituir-valor-tabuleiro (substituir-valor-tabuleiro (substituir-valor-tabuleiro (substituir-valor-tabuleiro (no-tabuleiro no) coordenada valor) (list (1+ x) y) valor) (list x (1+ y)) valor) (list (1+ x) (1+ y)) valor) 
                 (+ (no-casas-preenchidas no) 4) (cons (car (no-pecas no)) (list (1- numPecas) (car (last (no-pecas no))))) no)
