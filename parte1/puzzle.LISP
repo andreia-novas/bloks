@@ -3,73 +3,7 @@
 ;;;; Disciplina de IA - 2021 / 2022
 ;;;; Autor: Joana Guerreiro e Andreia Novas
 
-;; remover-se
-;; teste: (remover-se #'(lambda (x) (= x 0)) '(1 2 0 2 0 4))
-(defun remover-se (pred lista)
-"Remover valor da lista se preecher condicao (remover-se #'(lambda (x) (= x 0)) '(1 2 0 2 0 4))"
-  (cond 
-   ((null lista) NIL) 
-   ((funcall pred (car lista)) (remover-se pred (cdr lista)))
-   (T (cons (car lista) (remover-se pred (cdr lista))))
-  )
-)
-
-;; juntar-lista
-;; teste: (juntar-lista (tabuleiro-teste))
-(defun juntar-lista (lista)
- "Retorna todos os valores do tabuleiro numa lista só"
-  (cond
-    ((null lista) '())
-    ((append (car lista) (juntar-lista (cdr lista))))
-  )
-)
-
-;; criar-no
-(defun criar-no (tabuleiro casasPreenchidas pecas noPai &optional (jogador 0))
-  (list (list tabuleiro casasPreenchidas (no-min-casas noPai)) (list pecas jogador) noPai)
-)
-
-;; no-teste
-(defun no-teste ()
-  (list (list (tabuleiro-vazio) 0 72) '((10 10 15) 0) NIL)
-)
-
-;; no-inicial
-;; teste: (no-inicial)
-(defun no-inicial (&optional (tabuleiro (tabuleiro-vazio)) (minCasas 72))
-  "Define um no inical do problema"
-  (list (list tabuleiro 0 minCasas) '((10 10 15) 0) NIL)
-)
-
-;; no-pai 
-(defun no-pai (no)
-  (car (last no))
-)
-
-;; no-tabuleiro
-(defun no-tabuleiro (no)
-  (caar no)
-)
-
-;; no-casas-preenchidas
-(defun no-casas-preenchidas (no)
-  (cadar no)
-)
-
-;; no-min-casas
-(defun no-min-casas (no)
-  (caddar no)
-)
-
-;; no-pecas
-(defun no-pecas (no)
-  (caadr no)
-)
-
-;; no-jogador
-(defun no-jogador (no)
-  (cadadr no)
-)
+;;;;;;;;;; TABULEIROS ;;;;;;;;;; 
 
 ;; tabuleiro-teste
 (defun tabuleiro-teste ()
@@ -131,6 +65,93 @@
   )
 )
 
+
+
+
+;;;;;;;;;; FUNÇÕES GERAIS ;;;;;;;;;; 
+
+;; remover-se
+;; teste: (remover-se #'(lambda (x) (= x 0)) '(1 2 0 2 0 4))
+(defun remover-se (pred lista)
+"Remover valor da lista se preecher condicao (remover-se #'(lambda (x) (= x 0)) '(1 2 0 2 0 4))"
+  (cond 
+   ((null lista) NIL) 
+   ((funcall pred (car lista)) (remover-se pred (cdr lista)))
+   (T (cons (car lista) (remover-se pred (cdr lista))))
+  )
+)
+
+;; juntar-lista
+;; teste: (juntar-lista (tabuleiro-teste))
+(defun juntar-lista (lista)
+ "Retorna todos os valores do tabuleiro numa lista só"
+  (cond
+    ((null lista) '())
+    ((append (car lista) (juntar-lista (cdr lista))))
+  )
+)
+
+
+
+;;;;;;;;;; FUNÇÕES NO ;;;;;;;;;; 
+
+;; criar-no
+(defun criar-no (tabuleiro casasPreenchidas pecas noPai &optional (jogador 0))
+  (list (list tabuleiro casasPreenchidas (no-min-casas noPai)) (list pecas jogador) noPai)
+)
+
+;; no-teste
+(defun no-teste ()
+  (list (list (tabuleiro-vazio) 0 72) '((10 10 15) 0) NIL)
+)
+
+;; no-inicial
+;; teste: (no-inicial)
+(defun no-inicial (&optional (tabuleiro (tabuleiro-vazio)) (minCasas 72))
+  "Define um no inical do problema"
+  (list (list tabuleiro 0 minCasas) '((10 10 15) 0) NIL)
+)
+
+;; no-pai 
+(defun no-pai (no)
+  (car (last no))
+)
+
+;; no-tabuleiro
+(defun no-tabuleiro (no)
+  (caar no)
+)
+
+;; no-casas-preenchidas
+(defun no-casas-preenchidas (no)
+  (cadar no)
+)
+
+;; no-min-casas
+(defun no-min-casas (no)
+  (caddar no)
+)
+
+;; no-pecas
+(defun no-pecas (no)
+  (caadr no)
+)
+
+;; no-jogador
+(defun no-jogador (no)
+  (cadadr no)
+)
+
+;; existePecas
+(defun existePecas (numPecas)
+  (<= numPecas 0)
+)
+
+
+
+
+;;;;;;;;;; FUNÇÕES TABULEIRO ;;;;;;;;;;
+
 ;; largura-tabuleiro
 (defun largura-tabuleiro (tabuleiro)
   (length (car tabuleiro))
@@ -154,10 +175,25 @@
   (nth numlinha tabuleiro)
 )
 
-;; existePecas
-(defun existePecas (numPecas)
-  (<= numPecas 0)
+;; verifcar-espaços-vazios
+(defun verifcar-espaços-vazios (tabuleiro coordenada &optional (valor 1))
+  (let ((y (car (last coordenada)))
+        (x (first coordenada)))
+     (cond
+        ((fora-tabuleiro tabuleiro coordenada) NIL)
+        ((and (> x 0) (= (valor-coordenada tabuleiro (list (1- x) y)) valor)) NIL)
+        ((and (< x (1- (largura-tabuleiro tabuleiro))) (= (valor-coordenada tabuleiro (list (1+ x) y)) valor)) NIL)
+        ((and (> y 0) (= (valor-coordenada tabuleiro (list x (1- y))) valor)) NIL)
+        ((and (< y (1- (comprimento-tabuleiro tabuleiro))) (= (valor-coordenada tabuleiro (list x (1+ y))) valor)) NIL)
+        (t)
+     )
+  )
 )
+
+
+
+
+;;;;;;;;;; FUNÇÕES COORDENADAS TABULEIRO ;;;;;;;;;;
 
 ;; valor-coordenada
 ;; teste: (valor-coordenada (tabuleiro-vazio) '(1 1))
@@ -236,38 +272,14 @@
   )
 )
 
-;;;; OPERADORES 
+
+
+
+;;;;;;;;;; OPERADORES ;;;;;;;;;; 
 
 ;; lista-operadores
 (defun lista-operadores ()
   (list 'colocar-mini-quadrado 'colocar-quadrado-vertice-sup-esquerdo 'colocar-quadrado-vertice-sup-direito 'colocar-quadrado-vertice-esquerdo 'colocar-quadrado-vertice-direito)
-)
-
-;; lista-sucessores
-(defun lista-sucessores (no &optional (valor 1))
-  (let ((listaCoordenadas (lista-coordenadas-possiveis (no-tabuleiro no))))
-    (cond
-       ((null listaCoordenadas) NIL)
-       (t (mapcar #'(lambda (coordenada) (remover-se #'(lambda (valor) (null valor))
-                      (mapcar #'(lambda (operador) (funcall operador no coordenada valor)) 
-        (lista-operadores)))) listaCoordenadas))
-    )
-  )
-)
-
-;; verifcar-espaços-vazios
-(defun verifcar-espaços-vazios (tabuleiro coordenada &optional (valor 1))
-  (let ((y (car (last coordenada)))
-        (x (first coordenada)))
-     (cond
-        ((fora-tabuleiro tabuleiro coordenada) NIL)
-        ((and (> x 0) (= (valor-coordenada tabuleiro (list (1- x) y)) valor)) NIL)
-        ((and (< x (1- (largura-tabuleiro tabuleiro))) (= (valor-coordenada tabuleiro (list (1+ x) y)) valor)) NIL)
-        ((and (> y 0) (= (valor-coordenada tabuleiro (list x (1- y))) valor)) NIL)
-        ((and (< y (1- (comprimento-tabuleiro tabuleiro))) (= (valor-coordenada tabuleiro (list x (1+ y))) valor)) NIL)
-        (t)
-     )
-  )
 )
 
 ;;;; MINI-QUADRADO
@@ -371,7 +383,21 @@
 
 ;;;; PECA S
 
+;;(defun colocar-peca-s)
 
 
 
 
+;;;;;;;;;; SUCESSORES ;;;;;;;;;; 
+
+;; lista-sucessores
+(defun lista-sucessores (no &optional (valor 1))
+  (let ((listaCoordenadas (lista-coordenadas-possiveis (no-tabuleiro no))))
+    (cond
+       ((null listaCoordenadas) NIL)
+       (t (mapcar #'(lambda (coordenada) (remover-se #'(lambda (valor) (null valor))
+                      (mapcar #'(lambda (operador) (funcall operador no coordenada valor)) 
+        (lista-operadores)))) listaCoordenadas))
+    )
+  )
+)
