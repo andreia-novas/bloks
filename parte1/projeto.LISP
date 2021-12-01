@@ -7,7 +7,7 @@
 (defun iniciar-jogo () 
   "Carrega os ficheiros e chama o menu pricipal"
   (progn 
-    ;;(carregar-ficheiros)
+    (carregar-ficheiros)
     (menu-inicial (ler-problemas))
   )
 )
@@ -15,6 +15,19 @@
 (defun diretorio ()
   "Diretório do projeto"
   (string "C:/Users/User/Instituto Politécnico de Setúbal/IA Project - Blocks - General/Blocks/bloks/parte1")
+)
+
+(defun carregar-ficheiros ()
+  "Carrega os ficheiros do projeto" 
+  (let ((path (diretorio)))
+    (progn
+      (compile-file (concatenate 'string path "/puzzle.lisp"))
+      ;;(compile-file (concatenate 'string path "/procura.lisp"))
+
+      (load (concatenate 'string path "/puzzle.lisp"))
+      ;;(load (concatenate 'string path "/procura.lisp"))
+    )
+  )
 )
 
 ;;;;;;;;;; MENUS ;;;;;;;;;; 
@@ -46,8 +59,8 @@
 
       (cond ((OR (not (numberp opcao)) (< opcao 0) (> opcao totalProblemas)) 
                (format t "~% ~% >> Resposta invalida  << ~% ~%")
-               (selecionar-problema problemas))
-            (t (selecionar-algoritmo (nth (- opcao 1) problemas)))
+               (t (selecionar-problema problemas)))
+            ;;(t (selecionar-algoritmo (nth (- opcao 1) problemas)))
       )
     )
   )
@@ -68,8 +81,9 @@
 
 (defun imprimir-problema (index problema)
   "Imprime o tabuleiro do problema"
-  (format t "~% ~% ~d - ~A ~%     ~A~%     ~A~%     ~A~%     ~A~%     ~A~%     ~A~%     ~A~%     ~A~%     ~A~%     ~A~%     ~A~%     ~A~%     ~A~%     Preencher pelo menos ~d casas para ganhar" 
-          index 
+  (format t "~% ~% ~d -   ~A ~%      1~A ~%      2~A~%      3~A~%      4~A~%      5~A~%      6~A~%      7~A~%      8~A~%      9~A~%     10~A~%     11~A~%     12~A~%     13~A~%     14~A~%     Preencher pelo menos ~d casas para ganhar" 
+          index
+          '(A B C D E F G H I J K L M N)
           (nth 0 (car problema)) 
           (nth 1 (car problema)) 
           (nth 2 (car problema)) 
@@ -86,6 +100,23 @@
           (nth 13 (car problema))
           (nth 1 problema))
 )
+
+(defun selecionar-algoritmo (problema)
+  "Menu Algoritmos"
+  (progn 
+    (algoritmos-opcoes-menu)
+
+    (let ((opcao (read)))
+
+      (cond ((OR (not (numberp opcao)) (< opcao 1) (> opcao 3)) 
+               (progn
+                 (format t "~% ~% >> Resposta invalida << ~% ~%")
+                 (selecionar-algoritmo problema)
+               ))
+            (t (eval-algoritmo problema (nome-algoritmo opcao)))))
+  )
+)
+
 
 ;;;;;;;;;; PROBLEMAS INPUT ;;;;;;;;;; 
 (defun ler-problemas ()
