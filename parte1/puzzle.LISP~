@@ -3,73 +3,7 @@
 ;;;; Disciplina de IA - 2021 / 2022
 ;;;; Autor: Joana Guerreiro e Andreia Novas
 
-;; remover-se
-;; teste: (remover-se #'(lambda (x) (= x 0)) '(1 2 0 2 0 4))
-(defun remover-se (pred lista)
-"Remover valor da lista se preecher condicao (remover-se #'(lambda (x) (= x 0)) '(1 2 0 2 0 4))"
-  (cond 
-   ((null lista) NIL) 
-   ((funcall pred (car lista)) (remover-se pred (cdr lista)))
-   (T (cons (car lista) (remover-se pred (cdr lista))))
-  )
-)
-
-;; juntar-lista
-;; teste: (juntar-lista (tabuleiro-teste))
-(defun juntar-lista (lista)
- "Retorna todos os valores do tabuleiro numa lista só"
-  (cond
-    ((null lista) '())
-    ((append (car lista) (juntar-lista (cdr lista))))
-  )
-)
-
-;; criar-no
-(defun criar-no (tabuleiro casasPreenchidas pecas noPai &optional (jogador 0))
-  (list (list tabuleiro casasPreenchidas (no-min-casas no)) (list pecas jogador) noPai)
-)
-
-;; no-teste
-(defun no-teste ()
-  (list (list (tabuleiro-vazio) 0 72) '((10 10 15) 0) NIL)
-)
-
-;; no-inicial
-;; teste: (no-inicial)
-(defun no-inicial (&optional (tabuleiro (tabuleiro-vazio)) (minCasas 72))
-  "Define um no inical do problema"
-  (list (list tabuleiro 0 minCasas) '((10 10 15) 0) NIL)
-)
-
-;; no-pai 
-(defun no-pai (no)
-  (car (last no))
-)
-
-;; no-tabuleiro
-(defun no-tabuleiro (no)
-  (caar no)
-)
-
-;; no-casas-preenchidas
-(defun no-casas-preenchidas (no)
-  (cadar no)
-)
-
-;; no-min-casas
-(defun no-min-casas (no)
-  (caddar no)
-)
-
-;; no-pecas
-(defun no-pecas (no)
-  (caadr no)
-)
-
-;; no-jogador
-(defun no-jogador (no)
-  (cadadr no)
-)
+;;;;;;;;;; TABULEIROS ;;;;;;;;;; 
 
 ;; tabuleiro-teste
 (defun tabuleiro-teste ()
@@ -131,6 +65,104 @@
   )
 )
 
+
+
+
+;;;;;;;;;; FUNÇÕES GERAIS ;;;;;;;;;; 
+
+;; remover-se
+;; teste: (remover-se #'(lambda (x) (= x 0)) '(1 2 0 2 0 4))
+(defun remover-se (pred lista)
+"Remover valor da lista se preecher condicao (remover-se #'(lambda (x) (= x 0)) '(1 2 0 2 0 4))"
+  (cond 
+   ((null lista) NIL) 
+   ((funcall pred (car lista)) (remover-se pred (cdr lista)))
+   (T (cons (car lista) (remover-se pred (cdr lista))))
+  )
+)
+
+;; juntar-lista
+;; teste: (juntar-lista (tabuleiro-teste))
+(defun juntar-lista (lista)
+ "Retorna todos os valores do tabuleiro numa lista só"
+  (cond
+    ((null lista) '())
+    ((append (car lista) (juntar-lista (cdr lista))))
+  )
+)
+
+
+
+;;;;;;;;;; FUNÇÕES NO ;;;;;;;;;; 
+
+;; criar-no
+(defun criar-no (tabuleiro casasPreenchidas pecas noPai &optional (jogador 0))
+  (list (list tabuleiro casasPreenchidas (no-min-casas noPai)) (list pecas jogador) noPai)
+)
+
+;; no-teste
+(defun no-teste ()
+  (list (list (tabuleiro-vazio) 0 72) '((10 10 15) 0) NIL)
+)
+
+;; no-inicial
+;; teste: (no-inicial)
+(defun no-inicial (&optional (tabuleiro (tabuleiro-vazio)) (minCasas 72))
+  "Define um no inical do problema"
+  (list (list tabuleiro 0 minCasas) '((10 10 15) 0) NIL)
+)
+
+;; no-pai 
+(defun no-pai (no)
+  (car (last no))
+)
+
+;; no-tabuleiro
+(defun no-tabuleiro (no)
+  (caar no)
+)
+
+;; no-casas-preenchidas
+(defun no-casas-preenchidas (no)
+  (cadar no)
+)
+
+;; no-min-casas
+(defun no-min-casas (no)
+  (caddar no)
+)
+
+;; no-pecas
+(defun no-pecas (no)
+  (caadr no)
+)
+
+;; no-jogador
+(defun no-jogador (no)
+  (cadadr no)
+)
+
+;; existePecas
+(defun existePecas (numPecas)
+  (<= numPecas 0)
+)
+
+;; tirar-peca
+(defun tirar-peca (peca no)
+ (let ((numPecas (nth peca (no-pecas no))))
+  (cond
+     ((= peca 0) (cons (1- numPecas) (cdr (no-pecas no))))
+     ((= peca 1) (cons (car (no-pecas no)) (list (1- numPecas) (car (last (no-pecas no))))))
+     (t (cons (car (no-pecas no)) (list (cadr (no-pecas no)) (1- numPecas))))
+  )
+ )
+)
+
+
+
+
+;;;;;;;;;; FUNÇÕES TABULEIRO ;;;;;;;;;;
+
 ;; largura-tabuleiro
 (defun largura-tabuleiro (tabuleiro)
   (length (car tabuleiro))
@@ -154,15 +186,39 @@
   (nth numlinha tabuleiro)
 )
 
-;; existePecas
-(defun existePecas (numPecas)
-  (<= numPecas 0)
+;; verifcar-espaços-vazios
+(defun verifcar-espaços-vazios (tabuleiro coordenada &optional (valor 1))
+  (let ((y (car (last coordenada)))
+        (x (first coordenada)))
+     (cond
+        ((fora-tabuleiro tabuleiro coordenada) NIL)
+        ((and (> x 0) (= (valor-coordenada tabuleiro (list (1- x) y)) valor)) NIL)
+        ((and (< x (1- (largura-tabuleiro tabuleiro))) (= (valor-coordenada tabuleiro (list (1+ x) y)) valor)) NIL)
+        ((and (> y 0) (= (valor-coordenada tabuleiro (list x (1- y))) valor)) NIL)
+        ((and (< y (1- (comprimento-tabuleiro tabuleiro))) (= (valor-coordenada tabuleiro (list x (1+ y))) valor)) NIL)
+        (t)
+     )
+  )
 )
+
+
+
+
+;;;;;;;;;; FUNÇÕES COORDENADAS TABULEIRO ;;;;;;;;;;
 
 ;; valor-coordenada
 ;; teste: (valor-coordenada (tabuleiro-vazio) '(1 1))
 (defun valor-coordenada (tabuleiro coordenada)
   (nth (first coordenada) (linha (car (last coordenada)) tabuleiro))
+)
+
+;; coordenadas-validas
+(defun coordenadas-validas (tabuleiro listaCoordenadas)
+  (cond
+    ((null listaCoordenadas))
+    ((or (fora-tabuleiro tabuleiro (car listaCoordenadas)) (/= (valor-coordenada tabuleiro (car listaCoordenadas)) 0))  NIL)
+    (t (coordenadas-validas tabuleiro (cdr listaCoordenadas)))
+  )
 )
 
 ;; substituir-valor-na-linha
@@ -209,7 +265,7 @@
 (defun procurar-coordenadas-possiveis (tabuleiro &optional (y 0))
   (cond
     ((= y (comprimento-tabuleiro tabuleiro)) NIL)
-    (t (cons (procurar-coordenadas-possiveis-linha tabuleiro (linha y tabuleiro) y)(procurar-coordenadas-possiveis tabuleiro (1+ y))))
+    (t (cons (procurar-coordenadas-possiveis-linha tabuleiro (linha y tabuleiro) y) (procurar-coordenadas-possiveis tabuleiro (1+ y))))
   )
 )
 
@@ -236,38 +292,46 @@
   )
 )
 
-;;;; OPERADORES 
-
-;; lista-operadores
-(defun lista-operadores ()
-  (list 'colocar-mini-quadrado 'colocar-quadrado-vertice-sup-esquerdo 'colocar-quadrado-vertice-sup-direito 'colocar-quadrado-vertice-esquerdo 'colocar-quadrado-vertice-direito)
-)
-
-;; lista-sucessores
-(defun lista-sucessores (no &optional (valor 1))
-  (let ((listaCoordenadas (lista-coordenadas-possiveis (no-tabuleiro no))))
+;; substituir-valores-linha
+(defun substituir-valores-linha (linha listaCoordenadas valor &optional (x 0))
+  (let ((coordenadaCorrente (car listaCoordenadas)))
     (cond
-       ((null listaCoordenadas) NIL)
-       (t (mapcar #'(lambda (coordenada)(remover-se #'(lambda(valor)(null valor))
-                      (mapcar #'(lambda (operador) (funcall operador no coordenada valor)) 
-        (lista-operadores)))) listaCoordenadas))
+      ((or (null linha) (null coordenadaCorrente)) linha)
+      ((= x (car coordenadaCorrente)) (cons valor (substituir-valores-linha (cdr linha) (cdr listaCoordenadas) valor (1+ x))))
+      (t (cons (car linha) (substituir-valores-linha (cdr linha) listaCoordenadas valor (1+ x))))
     )
   )
 )
 
-;; verifcar-espaços-vazios
-(defun verifcar-espaços-vazios (tabuleiro coordenada &optional (valor 1))
-  (let ((y (car (last coordenada)))
-        (x (first coordenada)))
-     (cond
-        ((fora-tabuleiro tabuleiro coordenada) NIL)
-        ((and (> x 0) (= (valor-coordenada tabuleiro (list (1- x) y)) valor)) NIL)
-        ((and (< x (1- (largura-tabuleiro tabuleiro))) (= (valor-coordenada tabuleiro (list (1+ x) y)) valor)) NIL)
-        ((and (> y 0) (= (valor-coordenada tabuleiro (list x (1- y))) valor)) NIL)
-        ((and (< y (1- (comprimento-tabuleiro tabuleiro))) (= (valor-coordenada tabuleiro (list x (1+ y))) valor)) NIL)
-        (t)
-     )
+;; substituir-valores-coluna
+(defun substituir-valores-coluna (tabuleiro listaCoordenadas valor &optional (y 0))
+  (let ((coordenadaCorrente (car listaCoordenadas)))
+    (cond
+      ((null coordenadaCorrente) tabuleiro)
+      ((= (cadr coordenadaCorrente) y) 
+         (cons (substituir-valores-linha (car tabuleiro) listaCoordenadas valor) 
+               (substituir-valores-coluna (cdr tabuleiro) (remover-se #'(lambda (coordenada) (= (cadr coordenada) y)) listaCoordenadas) valor (1+ y))))
+      (t (cons (car tabuleiro) (substituir-valores-coluna (cdr tabuleiro) listaCoordenadas valor (1+ y))))
+    )
   )
+)
+
+;; substituir-valores-tabuleiro
+(defun substituir-valores-tabuleiro (tabuleiro listaCoordenadas &optional (valor 1))
+  (cond
+    ((coordenadas-validas tabuleiro listaCoordenadas) (substituir-valores-coluna tabuleiro listaCoordenadas valor))
+    (NIL)
+  )
+)
+
+
+
+
+;;;;;;;;;; OPERADORES ;;;;;;;;;; 
+
+;; lista-operadores
+(defun lista-operadores ()
+  (list 'colocar-mini-quadrado 'colocar-quadrado-vertice-sup-esquerdo 'colocar-quadrado-vertice-sup-direito 'colocar-quadrado-vertice-esquerdo 'colocar-quadrado-vertice-direito 'colocar-peca-s-vertice-direito-pos1 'colocar-peca-s-vertice-direito-pos2 'colocar-peca-s-vertice-esquerdo 'colocar-peca-s-vertice-sup-esquerdo-pos2)
 )
 
 ;;;; MINI-QUADRADO
@@ -279,7 +343,7 @@
     (cond
       ((existePecas numPecas) NIL) 
       ((equal (verifcar-espaços-vazios (no-tabuleiro no) coordenada valor) NIL) NIL)
-      (t (criar-no (substituir-valor-tabuleiro (no-tabuleiro no) coordenada valor) (1+ (no-casas-preenchidas no)) (cons (1- numPecas) (cdr (no-pecas no))) no))
+      (t (criar-no (substituir-valor-tabuleiro (no-tabuleiro no) coordenada valor) (1+ (no-casas-preenchidas no)) (tirar-peca 0 no) no))
     )
   )
 )
@@ -294,16 +358,16 @@
 (defun colocar-quadrado-vertice-sup-esquerdo (no coordenada &optional (valor 1))
   (let ((y (car (last coordenada)))
         (x (first coordenada))
-        (numPecas (nth 1 (no-pecas no))))
+        (numPecas (nth 1 (no-pecas no)))) 
      (cond
         ((existePecas numPecas) NIL)
         ((equal (verifcar-espaços-vazios (no-tabuleiro no) coordenada valor) NIL) NIL)
         ((equal (verifcar-espaços-vazios (no-tabuleiro no) (list (1- x) y) valor) NIL) NIL)
         ((equal (verifcar-espaços-vazios (no-tabuleiro no) (list x (1- y)) valor) NIL) NIL)
         ((equal (verifcar-espaços-vazios (no-tabuleiro no) (list (1- x) (1- y)) valor) NIL) NIL)
-        (t (criar-no
-           (substituir-valor-tabuleiro (substituir-valor-tabuleiro (substituir-valor-tabuleiro (substituir-valor-tabuleiro (no-tabuleiro no) coordenada valor) (list (1- x) y) valor) (list x (1- y)) valor) (list (1- x) (1- y)) valor) 
-           (+ (no-casas-preenchidas no) 4) (cons (car (no-pecas no)) (list (1- numPecas) (car (last (no-pecas no))))) no))
+        (t (criar-no                                         
+           (substituir-valores-tabuleiro (no-tabuleiro no) (list (list (1- x) (1- y)) (list x (1- y)) (list (1- x) y) coordenada) valor) 
+            (+ (no-casas-preenchidas no) 4) (tirar-peca 1 no) no))
      )
   )
 )
@@ -315,14 +379,15 @@
         (x (first coordenada))
         (numPecas (nth 1 (no-pecas no))))
      (cond
-        ((existePecas numPecas ) NIL)
+        ((existePecas numPecas) NIL)
         ((equal (verifcar-espaços-vazios (no-tabuleiro no) coordenada valor) NIL) NIL)
         ((equal (verifcar-espaços-vazios (no-tabuleiro no) (list (1+ x) y) valor) NIL) NIL)
         ((equal (verifcar-espaços-vazios (no-tabuleiro no) (list x (1- y)) valor) NIL) NIL)
         ((equal (verifcar-espaços-vazios (no-tabuleiro no) (list (1+ x) (1- y)) valor) NIL) NIL)
         (t (criar-no 
-               (substituir-valor-tabuleiro (substituir-valor-tabuleiro (substituir-valor-tabuleiro (substituir-valor-tabuleiro (no-tabuleiro no) coordenada valor) (list (1+ x) y) valor) (list x (1- y)) valor) (list (1+ x) (1- y)) valor)
-          (+ (no-casas-preenchidas no) 4) (cons (car (no-pecas no)) (list (1- numPecas) (car (last (no-pecas no))))) no )
+           (substituir-valor-tabuleiro(no-tabuleiro no ) (list(list (1+ x) y  ) coordenada ( list (1+ x) (1- y  ) ) (list x (1- y) ) )  valor )
+              ;; (substituir-valor-tabuleiro (substituir-valor-tabuleiro (substituir-valor-tabuleiro (substituir-valor-tabuleiro (no-tabuleiro no) coordenada valor) (list (1+ x) y) valor) (list x (1- y)) valor) (list (1+ x) (1- y)) valor)
+          (+ (no-casas-preenchidas no) 4) (tirar-peca 1 no) no)
          )
         )
     )
@@ -335,34 +400,34 @@
         (x (first coordenada))
         (numPecas (nth 1 (no-pecas no))))
      (cond
-        ((existePecas numPecas ) NIL)
+        ((existePecas numPecas) NIL)
         ((equal (verifcar-espaços-vazios (no-tabuleiro no) coordenada valor) NIL) NIL)
         ((equal (verifcar-espaços-vazios (no-tabuleiro no) (list (1- x) y) valor) NIL) NIL)
         ((equal (verifcar-espaços-vazios (no-tabuleiro no) (list x (1+ y)) valor) NIL) NIL)
         ((equal (verifcar-espaços-vazios (no-tabuleiro no) (list (1- x) (1+ y)) valor) NIL) NIL)
         (t (criar-no
-               (substituir-valor-tabuleiro (substituir-valor-tabuleiro (substituir-valor-tabuleiro (substituir-valor-tabuleiro (no-tabuleiro no) coordenada valor) (list (1- x) y) valor) (list x (1+ y)) valor) (list (1- x) (1+ y)) valor)
-               (+ (no-casas-preenchidas no) 4) (cons (car (no-pecas no)) (list (1- numPecas) (car (last (no-pecas no))))) no)
+            (substituir-valores-tabuleiro (no-tabuleiro no) (list (list (1- x)y) coordenada (list (1- x) (1+ y))   (list  x (1+ y))) valor) 
+               (+ (no-casas-preenchidas no) 4) (tirar-peca 1 no) no)
          )
      )
   )
 )
 
-;; colocar-quadrado-vertice-direito
+;; colocar-quadrado-vertice-direito 
 ;; teste: (colocar-quadrado-vertice-direito (tabuleiro-vazio) '(0 0) 1)
 (defun colocar-quadrado-vertice-direito (no coordenada &optional (valor 1))
   (let ((y (car (last coordenada)))
         (x (first coordenada))
         (numPecas (nth 1 (no-pecas no))))
      (cond
-        ((existePecas (nth 1 (no-pecas no))) NIL)
+        ((existePecas numPecas) NIL)
         ((equal (verifcar-espaços-vazios (no-tabuleiro no) coordenada valor) NIL) NIL)
         ((equal (verifcar-espaços-vazios (no-tabuleiro no) (list (1+ x) y) valor) NIL) NIL)
         ((equal (verifcar-espaços-vazios (no-tabuleiro no) (list x (1+ y)) valor) NIL) NIL)
-        ((equal (verifcar-espaços-vazios (no-tabuleiro no) (list (1+ x) (1+ y)) valor) NIL) NIL)
+        ((equal (verifcar-espaços-vazios (no-tabuleiro no) (list (1+ x) (1+ y) ) valor) NIL) NIL)
         (t (criar-no
-                (substituir-valor-tabuleiro (substituir-valor-tabuleiro (substituir-valor-tabuleiro (substituir-valor-tabuleiro (no-tabuleiro no) coordenada valor) (list (1+ x) y) valor) (list x (1+ y)) valor) (list (1+ x) (1+ y)) valor) 
-                (+ (no-casas-preenchidas no) 4) (cons (car (no-pecas no)) (list (1- numPecas) (car (last (no-pecas no))))) no)
+         (substituir-valores-tabuleiro (no-tabuleiro no) (list coordenada (list (1+ x)y ) ( list x (1+ y) ) (list (1+ x)(1+ y) ) ) valor)        
+                (+ (no-casas-preenchidas no) 4) (tirar-peca 1 no) no)
          )
       )
    )
@@ -371,7 +436,109 @@
 
 ;;;; PECA S
 
+;;(defun colocar-peca-s-vertice-direito-pos1  )
+;; teste: (colocar-peca-s-vertice-direito-pos1 (no-teste) '(0 0)) -> NIL
+;; teste: (colocar-peca-s-vertice-direito-pos1 (no-teste) '(1 1)) -> ((((0 0 1 1 0 0 0 0 0 0 0 0 0 0) (0 1 1 0 0 0 0 0 0 0 0 0 0 0) (0 0 0 0 0 0 0 0 0 0 0 0 0 0) (0 0 0 0 0 0 0 0 0 0 0 0 0 0) (0 0 0 0 0 0 0 0 0 0 0 0 0 0) (0 0 0 0 0 0 0 0 0 0 0 0 0 0) (0 0 0 0 0 0 0 0 0 0 0 0 0 0) (0 0 0 0 0 0 0 0 0 0 0 0 0 0) (0 0 0 0 0 0 0 0 0 0 0 0 0 0) (0 0 0 0 0 0 0 0 0 0 0 0 0 0) (0 0 0 0 0 0 0 0 0 0 0 0 0 0) (0 0 0 0 0 0 0 0 0 0 0 0 0 0) (0 0 0 0 0 0 0 0 0 0 0 0 0 0) (0 0 0 0 0 0 0 0 0 0 0 0 0 0)) 4 72) ((10 10 14) 0) (((# # # # # # # # # # # # # #) 0 72) ((10 10 15) 0) NIL))
+(defun colocar-peca-s-vertice-direito-pos1 (no coordenada &optional (valor 1))
+ (let ((y (car (last coordenada)))
+        (x (first coordenada))
+        (numPecas (nth 2 (no-pecas no))))
+  
+  (cond
+        ((existePecas numPecas) NIL)
+        ((equal (verifcar-espaços-vazios (no-tabuleiro no) coordenada valor) NIL) NIL)
+        ((equal (verifcar-espaços-vazios (no-tabuleiro no) (list (1+ x) y) valor) NIL) NIL)
+        ((equal (verifcar-espaços-vazios (no-tabuleiro no) (list (1+ x) (1- y)) valor) NIL) NIL)
+        ((equal (verifcar-espaços-vazios (no-tabuleiro no) (list (+ 2 x) (1- y) ) valor) NIL) NIL)
+        (t (criar-no
+         (substituir-valores-tabuleiro (no-tabuleiro no) (list (list (1+ x)(1- y) ) (list(+ 2 x)(1- y) ) coordenada (list (1+ x) y) ) valor)        
+                (+ (no-casas-preenchidas no) 4) (tirar-peca 2 no) no)
+         )
+      )
+
+ )
+)
+
+;;
+;;(defun colocar-peca-s-vertice-direito-pos2  )
+;; teste: (colocar-peca-s-vertice-direito-pos2 (no-teste) '(0 0)) -> NIL
+(defun colocar-peca-s-vertice-direito-pos2 (no coordenada &optional (valor 1))
+ (let ((y (car (last coordenada)))
+        (x (first coordenada))
+        (numPecas (nth 2 (no-pecas no))))
+  
+  (cond
+        ((existePecas numPecas) NIL)
+        ((equal (verifcar-espaços-vazios (no-tabuleiro no) coordenada valor) NIL) NIL)
+        ((equal (verifcar-espaços-vazios (no-tabuleiro no) (list (1+ x) y) valor) NIL) NIL)
+        ((equal (verifcar-espaços-vazios (no-tabuleiro no) (list  x (1+ y)) valor) NIL) NIL)
+        ((equal (verifcar-espaços-vazios (no-tabuleiro no) (list (1- x) (1+ y) ) valor) NIL) NIL)
+        (t (criar-no
+         (substituir-valores-tabuleiro (no-tabuleiro no) (list coordenada (list (1+ x) y ) (list (1- x)(1+ y) ) (list x(1+ y) )) valor)        
+                (+ (no-casas-preenchidas no) 4) (tirar-peca 2 no) no)
+         )
+      )
+
+ )
+)
+;;(defun colocar-peca-s-vertice-esquerdo  )
+;; teste: (colocar-peca-s-vertice-esquerdo (no-teste) '(0 0)) -> NIL
+(defun colocar-peca-s-vertice-esquerdo (no coordenada &optional (valor 1))
+ (let ((y (car (last coordenada)))
+        (x (first coordenada))
+        (numPecas (nth 2 (no-pecas no))))
+  
+  (cond
+        ((existePecas numPecas) NIL)
+        ((equal (verifcar-espaços-vazios (no-tabuleiro no) coordenada valor) NIL) NIL)
+        ((equal (verifcar-espaços-vazios (no-tabuleiro no) (list (1- x) y) valor) NIL) NIL)
+        ((equal (verifcar-espaços-vazios (no-tabuleiro no) (list (- 2 x) (1+ y)) valor) NIL) NIL)
+        ((equal (verifcar-espaços-vazios (no-tabuleiro no) (list (1- x) (1+ y) ) valor) NIL) NIL)
+        (t (criar-no
+         (substituir-valores-tabuleiro (no-tabuleiro no) (list (list (1- x) y ) coordenada (list (- 2 x)(1+ y) ) (list(1- x)(1+ y) )) valor)        
+                (+ (no-casas-preenchidas no) 4) (tirar-peca 2 no) no)
+         )
+      )
+
+ )
+)
+;;(defun colocar-peca-s-vertice-sup-esquerdo-po2  )
+;; teste: (colocar-peca-s-vertice-sup-esquerdo-pos2 (no-teste) '(0 0)) -> NIL
+(defun colocar-peca-s-vertice-sup-esquerdo-pos2 (no coordenada &optional (valor 1))
+ (let ((y (car (last coordenada)))
+        (x (first coordenada))
+        (numPecas (nth 2 (no-pecas no))))
+  
+  (cond
+        ((existePecas numPecas) NIL)
+        ((equal (verifcar-espaços-vazios (no-tabuleiro no) coordenada valor) NIL) NIL)
+        ((equal (verifcar-espaços-vazios (no-tabuleiro no) (list  x(1+ y) ) valor) NIL) NIL)
+        ((equal (verifcar-espaços-vazios (no-tabuleiro no) (list (1+ x) (1+ y)) valor) NIL) NIL)
+        ((equal (verifcar-espaços-vazios (no-tabuleiro no) (list (1- x)  y ) valor) NIL) NIL)
+        (t (criar-no
+         (substituir-valores-tabuleiro (no-tabuleiro no) (list (list  x(1+ y)) (list(1+ x)(1+ y) ) (list (1- x)y ) coordenada ) valor)        
+                (+ (no-casas-preenchidas no) 4) (tirar-peca 2 no) no)
+         )
+      )
+
+ )
+)
 
 
 
 
+
+
+;;;;;;;;;; SUCESSORES ;;;;;;;;;; 
+
+;; lista-sucessores
+(defun lista-sucessores (no &optional (valor 1))
+  (let ((listaCoordenadas (lista-coordenadas-possiveis (no-tabuleiro no))))
+    (cond
+       ((null listaCoordenadas) NIL)
+       (t (mapcar #'(lambda (coordenada) (remover-se #'(lambda (valor) (null valor))
+                      (mapcar #'(lambda (operador) (funcall operador no coordenada valor)) 
+        (lista-operadores)))) listaCoordenadas))
+    )
+  )
+) 
