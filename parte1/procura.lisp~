@@ -1,0 +1,129 @@
+;;;; procura.lisp
+;;;; 
+;;;; Disciplina de IA - 2021 / 2022
+;;;; Autor: Joana Guerreiro e Andreia Novas
+
+;; penetrancia
+;; teste: (penetrancia 3 22)
+;; resultado: 0.13636364
+(defun penetrancia (profundidade totalNosGerados)
+"Funcao que permite calcular a penetrancia de um algoritmo"
+  (cond
+     ((not (zerop profundidade)) (float (/ profundidade totalNosGerados)))
+     (t 0)
+  )
+)
+
+;; polinomial
+;; teste: (polinomial 3 576460752303423488)
+;; resultado: 191561942608236107627100377340017616754754907646459904
+(defun polinomial (grau polinomio)
+"Funcao que implementa o calculo de uma funcao polinomial"
+    (cond
+     ((= grau 1) polinomio)
+     (t (+ (expt polinomio grau) (polinomial (1- grau) polinomio)))
+    )
+)
+
+;; fator-ramificacao
+;; teste: (fator-ramificacao 3 22)
+;; resultado: 2.400692
+(defun fator-ramificacao (profundidade nosGerados &optional (limiteInferior 1) (limiteSuperior most-positive-fixnum) (margemErro 0.00001) (limiteMedio (/ (+ limiteInferior limiteSuperior) 2)))
+"Funcao que permite calcular o fator de ramificacao para um no, esta aplica o metodo da bissecao para o calculo desta funcao com uma margem de erro de 0.00001"
+  (cond
+   ;;Se a diferenca entre os limites for inferior a margem de erro entao podemos assumir com precisao que o fator de ramificacao encontra-se entre estes dois limites
+   ((< (- limiteSuperior limiteInferior) margemErro) (float limiteMedio)) 
+   
+   ;;Caso o valor esteja mais perto do limiteInferior, diminui-se o limite superior
+   ((> (- (polinomial profundidade limiteMedio) nosGerados) margemErro) (fator-ramificacao profundidade nosGerados limiteInferior limiteMedio margemErro))  
+
+   ;;Caso o valor esteja mais perto do limiteSuperior, aumenta-se o limite inferior
+   (T (float (fator-ramificacao profundidade nosGerados limiteMedio limiteSuperior margemErro))) 
+  )
+)
+
+;; tamanho-lista-fechados-expandidos
+(defun tamanho-lista-fechados-expandidos (profundidade listaFechados)
+  (length (remover-se #'(lambda (no)(> (no-profundidade no) profundidade)) listaFechados))
+)
+
+;; condicao-sort
+(defun condicao-sort (noA noB)
+  (< (no-custo noA) (no-custo noB))
+)
+
+;; lista-resultados
+(defun lista-resultados (nosGerados nosExpandidos noObjetivo)
+  (list nosGerados 
+        nosExpandidos 
+        (penetrancia (no-profundidade noObjetivo) nosGerados)
+        (fator-ramificacao (no-profundidade noObjetivo) nosGerados)
+        noObjetivo
+  )
+)
+
+
+;;;;;;;;;; ALGORITMO ;;;;;;;;;;
+
+;; BFS
+(defun bfs (listAbertos  &optional (listFechados NIL))
+ (let ((listaNos(append listAbertos listFechados)))
+  (cond 
+     ((null listAbertos) NIL)
+     (t(let ((sucessores (no-existe-listaP listaNos (lista-sucessores (car listAbertos)))))
+          (cond
+             ((null sucessores) (bfs (cdr listAbertos) (cons (car listAbertos) listFechados)))
+             (t(let ((noObjetivo (no-objetivoP sucessores)))
+                  (cond
+                     ((null noObjetivo) (bfs (append (cdr listAbertos) sucessores)(cons (car listAbertos) listFechados)))
+                     (t(lista-resultados (+ (length listaNos)(length sucessores)) (1+ (length listFechados)) noObjetivo))
+                  )
+             ))
+           )
+      ))
+   )
+  )
+)
+
+
+;; DFS
+(defun dfs (listAbertos profundidade &optional (listFechados NIL))
+ (let ((listaNos(append listAbertos listFechados)))
+  (cond 
+     ((null listAbertos) NIL)
+     ((> (no-profundidade (car listAbertos)) profundidade) (dfs (cdr listAbertos) profundidade (cons (car listAbertos) listFechados)))
+     (t(let ((sucessores (no-existe-listaP listaNos (lista-sucessores (car listAbertos)))))
+          (cond
+             ((null sucessores) (dfs (cdr listAbertos) profundidade (cons (car listAbertos) listFechados)))
+             (t(let ((noObjetivo (no-objetivoP sucessores)))
+                  (cond
+                     ((null noObjetivo) (dfs (append sucessores (cdr listAbertos)) profundidade (cons (car listAbertos) listFechados)))
+                     (t(lista-resultados (+ (length listaNos)(length sucessores)) (tamanho-lista-fechados-expandidos profundidade listFechados) noObjetivo))
+                  )
+             ))
+           )
+      ))
+   )
+  )
+)
+
+
+;; A*
+(defun a* (listAbertos &optional (heuristica 'heuristica-default) (listFechados NIL))
+  (let ((listaNos(append listAbertos listFechados)))
+    (cond 
+      ((null listAbertos) NIL)
+      ((no-solucao (car listAbertos))
+           (lista-resultados (length listaNos) (1+ (length listFechados)) (car listAbertos))
+       )
+      (t(let ((sucessores (no-existe-listaP listaNos (lista-sucessores (car listAbertos) heuristica)))) 
+          (cond
+             ((null sucessores) (a* (cdr listAbertos) heuristica (cons (car listAbertos) listFechados)))
+             (t(a* (sort (append sucessores (cdr listAbertos)) 'condicao-sort) heuristica (cons (car listAbertos) listFechados)))
+           )
+      ))
+    )
+  )
+)
+
+

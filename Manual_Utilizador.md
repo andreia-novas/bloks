@@ -22,11 +22,58 @@ Nesta aplicação está desenvolvidos os algoritmos BFS, DFS e A*, de procura em
 - **A***: Algoritmo de procura informada utiliza uma função heurística para calcular o valor de um nó e apenas explora os nós com o menos valor heurístico, garantindo assim, a melhor solução possível.
 
 ## Instalação e utilização
-Para a utilização é necessário iniciar o jogo, escolher um problema que será apresentado no menu e um  tipo algoritmo , para a resolução do mesmo.  
+Para a aplicação correr é necessário alterar o caminha da da função diretorio, pelo caminha onde o utilizador
+guardou a aplicação, no ficheiro projeto.lisp
+- Exemplo windows : C:/Users/User/Instituto Politécnico de Setúbal/IA Project - Blocks - General/Blocks/bloks/parte1
+
+O inicio da sua utilização é necessário iniciar o jogo, escolher um problema que será apresentado no menu , também será apresentado um 3 tipos algoritmos , para a resolução do problema.  
+ 
 
 ## Input/Output
-?
+No incio da aplicação será apresentado :
+![](https://raw.githubusercontent.com/andreia-novas/bloks/661e02e8bb63450a918b05107ab5a46c15a263f7/menu1.PNG)
+
+Terá de escolhar um problema
+![](https://raw.githubusercontent.com/andreia-novas/bloks/main/problema1.PNG)
+![](https://raw.githubusercontent.com/andreia-novas/bloks/main/problema2.PNG)
+![](https://raw.githubusercontent.com/andreia-novas/bloks/main/problema3.PNG)
+
+Terá de escolher um algoritmo
+![](https://raw.githubusercontent.com/andreia-novas/bloks/main/algoitmo.PNG)
+
+Terá de inserir uma máxima profundidade se escolher o dfs
+![](https://raw.githubusercontent.com/andreia-novas/bloks/main/profundidade.PNG)
+
+Terá de escolher uma heuristica se for o a*
+![](https://raw.githubusercontent.com/andreia-novas/bloks/main/heuristica.PNG)
 
 ## Exemplo de aplicação
-?
+No exemplo de aplicação destes problemas, acrescentamos um problema novo que é referido no enunciado e escolhemos o algoritmo a* e a nova heuristica criada.
+
+![](https://raw.githubusercontent.com/andreia-novas/bloks/main/Exemplo_parte1.PNG)
+### É mostrado todas os problemas existentes. 
+![](https://raw.githubusercontent.com/andreia-novas/bloks/main/Exemplo_parte2.PNG)
+### Neste exemplo escolhi o 7 , novo problema adicionado.
+![](https://raw.githubusercontent.com/andreia-novas/bloks/main/exemplo3.PNG)
+### Escolhemos o problema a * .
+![](https://raw.githubusercontent.com/andreia-novas/bloks/main/exemplo4.PNG)
+### Escolhemos a heuristica que criamos.
+
+### De seguida passo a apresentar as caraterísticas dos problemas.
+![](https://raw.githubusercontent.com/andreia-novas/bloks/main/exemplo5.PNG)
+### Por fim os resultados , o primeiro a ser apresentado é o no solução. 
+![](https://raw.githubusercontent.com/andreia-novas/bloks/main/exemplo6.PNG)
+![](https://raw.githubusercontent.com/andreia-novas/bloks/main/exemplo7.PNG)
+![](https://raw.githubusercontent.com/andreia-novas/bloks/main/exemplo8.PNG)
+![](https://raw.githubusercontent.com/andreia-novas/bloks/main/exemplo9.PNG)
+![](https://raw.githubusercontent.com/andreia-novas/bloks/main/exemplo10.PNG)
+![](https://raw.githubusercontent.com/andreia-novas/bloks/main/exemplo11.PNG)
+![](https://raw.githubusercontent.com/andreia-novas/bloks/main/exemplo12.PNG)
+![](https://raw.githubusercontent.com/andreia-novas/bloks/main/exemplo13.PNG)
+![](https://raw.githubusercontent.com/andreia-novas/bloks/main/exemplo14.PNG)
+![](https://raw.githubusercontent.com/andreia-novas/bloks/main/exemplo15.PNG)
+![](https://raw.githubusercontent.com/andreia-novas/bloks/main/exemplo16.PNG)
+![](https://raw.githubusercontent.com/andreia-novas/bloks/main/exemplo17.PNG)
+
+
 
