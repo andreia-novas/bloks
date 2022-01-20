@@ -244,7 +244,7 @@
     ((not (null (no-pai no)))
      (format t "~% > Jogador ~d jogou ~%" (trocar-jogador jogador))
     )
-    (t (progn (format t "")))
+    (t (format t "~%*******************************************~%******* Tabuleiro do inicio do jogo *******~%*******************************************~%"))
   )
   (imprimir-tabuleiro no tempo)
 )
@@ -253,9 +253,9 @@
 (defun imprimir-resultados (no tempoInicial)
 "Imprimir resultados do jogo, com o vencedor do mesmo"
   (progn
-    (format t  "~%        Chegamos ao fim do jogo ~%")
+    (format t  "~%*******************************************~%********* Chegamos ao fim do jogo *********~%*******************************************~%")
     (imprimir-tabuleiro no tempoInicial)
-    (format t "~%     Vencedor: ~s~%     ~%"            
+    (format t "~%     Vencedor: ~s~%     ~%*******************************************~%~%"            
           (vencedor (no-pontuacao-jogador no 1) (no-pontuacao-jogador no 2)))
   )
 )
@@ -308,7 +308,7 @@
 (defun menu-tipo-jogo ()
   "Menu tipo de jogo"
   (progn
-    (format t "~% ~% ~% ~%
+    (format t "~% ~% ~% Qual a opção de tipo de jogo? ~%
              1 - Humano vs Computador
              2 - Computador vs Computador ~%")
     (let ((opcao (read)))
@@ -461,7 +461,7 @@
       (t (let* ((tempoReal (get-internal-real-time))
                 (novoNo (obter-no-hashtable no jogador tempoLimite tempoReal))) 
            (progn
-             (format t "~% > Jogador ~d a fazer a sua jogada... ~%" (trocar-jogador jogador))
+             (format t "~% > Jogador ~d a fazer a sua jogada... ~%" jogador)
              (cond
               ((not (null existeHumano)) (jogada-humano tempoLimite (trocar-jogador jogador) existeHumano novoNo tempoReal))
               (t (jogada-computador tempoLimite (trocar-jogador jogador) existeHumano novoNo tempoReal))

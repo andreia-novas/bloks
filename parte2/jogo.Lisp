@@ -244,7 +244,7 @@
     ((not (null (no-pai no)))
      (format t "~% > Jogador ~d jogou ~%" (trocar-jogador jogador))
     )
-    (t (progn (format t "")))
+    (t (format t "~%*******************************************~%******* Tabuleiro do inicio do jogo *******~%*******************************************~%"))
   )
   (imprimir-tabuleiro no tempo)
 )
@@ -264,7 +264,7 @@
 (defun imprimir-escrever (no jogador tempoInicial existeHumano funcaoJogada)
  "Funcao que conforme os parametros chama as funcoes de imprimir no ecra e escrever do ficheiro, mas com o tempo a 0 ou utilizando o calculo"
   (cond 
-    ((or (and existeHumano (equal funcaoJogada "funcaoComputador"))) 
+    ((or (and existeHumano (equal funcaoJogada "funcaoComputador")) (null (no-pai no))) 
        (progn 
          (imprimir-jogada no jogador 0)
          (escrever-estado-ficheiro no 0 jogador)
@@ -308,7 +308,7 @@
 (defun menu-tipo-jogo ()
   "Menu tipo de jogo"
   (progn
-    (format t "~% ~% ~% ~%
+    (format t "~% ~% ~% Qual a opção de tipo de jogo? ~%
              1 - Humano vs Computador
              2 - Computador vs Computador ~%")
     (let ((opcao (read)))
