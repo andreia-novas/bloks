@@ -31,49 +31,49 @@ O inicio da sua utilização é necessário iniciar o jogo, escolher um problema
 
 ## Input/Output
 No incio da aplicação será apresentado :
-![](https://raw.githubusercontent.com/andreia-novas/bloks/661e02e8bb63450a918b05107ab5a46c15a263f7/menu1.PNG)
+![](https://raw.githubusercontent.com/andreia-novas/bloks/main/parte1/img/menu1.PNG)
 
 Terá de escolhar um problema
-![](https://raw.githubusercontent.com/andreia-novas/bloks/main/problema1.PNG)
-![](https://raw.githubusercontent.com/andreia-novas/bloks/main/problema2.PNG)
-![](https://raw.githubusercontent.com/andreia-novas/bloks/main/problema3.PNG)
+![](https://raw.githubusercontent.com/andreia-novas/bloks/main/parte1/img/problema1.PNG)
+![](https://raw.githubusercontent.com/andreia-novas/bloks/main/parte1/img/problema2.PNG)
+![](https://raw.githubusercontent.com/andreia-novas/bloks/main/parte1/img/problema3.PNG)
 
 Terá de escolher um algoritmo
-![](https://raw.githubusercontent.com/andreia-novas/bloks/main/algoitmo.PNG)
+![](https://raw.githubusercontent.com/andreia-novas/bloks/main/parte1/img/algoitmo.PNG)
 
 Terá de inserir uma máxima profundidade se escolher o dfs
-![](https://raw.githubusercontent.com/andreia-novas/bloks/main/profundidade.PNG)
+![](https://raw.githubusercontent.com/andreia-novas/bloks/main/parte1/img/profundidade.PNG)
 
 Terá de escolher uma heuristica se for o a*
-![](https://raw.githubusercontent.com/andreia-novas/bloks/main/heuristica.PNG)
+![](https://raw.githubusercontent.com/andreia-novas/bloks/main/parte1/img/heuristica.PNG)
 
 ## Exemplo de aplicação
 No exemplo de aplicação destes problemas, acrescentamos um problema novo que é referido no enunciado e escolhemos o algoritmo a* e a nova heuristica criada.
 
-![](https://raw.githubusercontent.com/andreia-novas/bloks/main/Exemplo_parte1.PNG)
+![](https://raw.githubusercontent.com/andreia-novas/bloks/main/parte1/img/Exemplo_parte1.PNG)
 ### É mostrado todas os problemas existentes. 
-![](https://raw.githubusercontent.com/andreia-novas/bloks/main/Exemplo_parte2.PNG)
+![](https://raw.githubusercontent.com/andreia-novas/bloks/main/parte1/img/Exemplo_parte2.PNG)
 ### Neste exemplo escolhi o 7 , novo problema adicionado.
-![](https://raw.githubusercontent.com/andreia-novas/bloks/main/exemplo3.PNG)
+![](https://raw.githubusercontent.com/andreia-novas/bloks/main/parte1/img/exemplo3.PNG)
 ### Escolhemos o problema a * .
-![](https://raw.githubusercontent.com/andreia-novas/bloks/main/exemplo4.PNG)
+![](https://raw.githubusercontent.com/andreia-novas/bloks/main/parte1/img/exemplo4.PNG)
 ### Escolhemos a heuristica que criamos.
 
 ### De seguida passo a apresentar as caraterísticas dos problemas.
-![](https://raw.githubusercontent.com/andreia-novas/bloks/main/exemplo5.PNG)
+![](https://raw.githubusercontent.com/andreia-novas/bloks/main/parte1/img/exemplo5.PNG)
 ### Por fim os resultados , o primeiro a ser apresentado é o no solução. 
-![](https://raw.githubusercontent.com/andreia-novas/bloks/main/exemplo6.PNG)
-![](https://raw.githubusercontent.com/andreia-novas/bloks/main/exemplo7.PNG)
-![](https://raw.githubusercontent.com/andreia-novas/bloks/main/exemplo8.PNG)
-![](https://raw.githubusercontent.com/andreia-novas/bloks/main/exemplo9.PNG)
-![](https://raw.githubusercontent.com/andreia-novas/bloks/main/exemplo10.PNG)
-![](https://raw.githubusercontent.com/andreia-novas/bloks/main/exemplo11.PNG)
-![](https://raw.githubusercontent.com/andreia-novas/bloks/main/exemplo12.PNG)
-![](https://raw.githubusercontent.com/andreia-novas/bloks/main/exemplo13.PNG)
-![](https://raw.githubusercontent.com/andreia-novas/bloks/main/exemplo14.PNG)
-![](https://raw.githubusercontent.com/andreia-novas/bloks/main/exemplo15.PNG)
-![](https://raw.githubusercontent.com/andreia-novas/bloks/main/exemplo16.PNG)
-![](https://raw.githubusercontent.com/andreia-novas/bloks/main/exemplo17.PNG)
+![](https://raw.githubusercontent.com/andreia-novas/bloks/main/parte1/img/exemplo6.PNG)
+![](https://raw.githubusercontent.com/andreia-novas/bloks/main/parte1/img/exemplo7.PNG)
+![](https://raw.githubusercontent.com/andreia-novas/bloks/main/parte1/img/exemplo8.PNG)
+![](https://raw.githubusercontent.com/andreia-novas/bloks/main/parte1/img/exemplo9.PNG)
+![](https://raw.githubusercontent.com/andreia-novas/bloks/main/parte1/img/exemplo10.PNG)
+![](https://raw.githubusercontent.com/andreia-novas/bloks/main/parte1/img/exemplo11.PNG)
+![](https://raw.githubusercontent.com/andreia-novas/bloks/main/parte1/img/exemplo12.PNG)
+![](https://raw.githubusercontent.com/andreia-novas/bloks/main/parte1/img/exemplo13.PNG)
+![](https://raw.githubusercontent.com/andreia-novas/bloks/main/parte1/img/exemplo14.PNG)
+![](https://raw.githubusercontent.com/andreia-novas/bloks/main/parte1/img/exemplo15.PNG)
+![](https://raw.githubusercontent.com/andreia-novas/bloks/main/parte1/img/exemplo16.PNG)
+![](https://raw.githubusercontent.com/andreia-novas/bloks/main/parte1/img/exemplo17.PNG)
 
 
 
