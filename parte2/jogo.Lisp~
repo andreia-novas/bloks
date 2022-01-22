@@ -264,7 +264,7 @@
 (defun imprimir-escrever (no jogador tempoInicial existeHumano funcaoJogada)
  "Funcao que conforme os parametros chama as funcoes de imprimir no ecra e escrever do ficheiro, mas com o tempo a 0 ou utilizando o calculo"
   (cond 
-    ((or (and existeHumano (equal funcaoJogada "funcaoComputador"))) 
+    ((or (and existeHumano (equal funcaoJogada "funcaoComputador")) (null (no-pai no))) 
        (progn 
          (imprimir-jogada no jogador 0)
          (escrever-estado-ficheiro no 0 jogador)
@@ -404,7 +404,6 @@
            (y (numero-para-coordenada (parse-integer (subseq opcao 1) :junk-allowed t)))
            (listaCoordenadas (lista-coordenadas-peca peca (list x y)))
            (listaCoordenadasVertices (lista-coordenadas-vertices-peca peca (list x y))))
-      (format t " ~a" (no-pai no))
       (cond 
         ((and (valida-possivel-colocar-peca (no-tabuleiro no) listaCoordenadas jogador) (validar-primeira-jogada (no-tabuleiro no) jogador))  (list peca listaCoordenadas))
         ((and (valida-possivel-colocar-peca (no-tabuleiro no) listaCoordenadas jogador) (validar-lista-coordenadas-vertices-peca listaCoordenadasVertices (no-tabuleiro no) jogador) ) (list peca listaCoordenadas))
@@ -476,7 +475,7 @@
 ;; jogada-humano
 (defun jogada-humano (tempoLimite jogador existeHumano no &optional (tempoInicial 0))
   (progn
-    (imprimir-escrever no jogador (get-universal-time) existeHumano "funcaoJogador")
+    (imprimir-escrever no jogador tempoInicial existeHumano "funcaoJogador")
     (cond
       ((no-solucaop no) 
          (imprimir-resultados no tempoInicial)
@@ -489,7 +488,7 @@
       )
       (t (let* ((jogada (definir-peca jogador no))
                 (novoNo (criar-jogada no (substituir-valores-tabuleiro (no-tabuleiro no)  (cadr jogada)  jogador) (peca-para-numero (car jogada)) jogador)))
-           (format t "~% > Jogador ~d a fazer a sua jogada... ~%" (trocar-jogador jogador))
+           (format t "~% > Jogador ~d a fazer a sua jogada... ~%" jogador)
            (jogada-computador tempoLimite (trocar-jogador jogador) existeHumano novoNo tempoInicial)
          )
       )
