@@ -98,9 +98,9 @@
 ;;     Cortes: 0
 ;;     Nos Analisados: 0
 ;;     Tempo: 0.0
-(defun imprimir-tabuleiro (no tempo)
+(defun imprimir-tabuleiro (no)
   "Imprimir estado do problema durante o caminho"
-    (format t "~%        A B C D E F G H I J K L M N ~%      1~A ~%      2~A~%      3~A~%      4~A~%      5~A~%      6~A~%      7~A~%      8~A~%      9~A~%     10~A~%     11~A~%     12~A~%     13~A~%     14~A~%~%     Jogador 1: ~%     Pontuacao: ~d~%     Peca Quadrado Pequeno: ~d~%     Peca Quadrado: ~d~%     Peca S: ~d~%~%     Jogador 2: ~%     Pontuacao: ~d~%     Peca Quadrado Pequeno: ~d~%     Peca Quadrado: ~d~%     Peca S: ~d~%~%     Estatisticas da Jogada: ~%     Cortes Alfa: ~d~%     Cortes Beta: ~d~%     Nos Analisados: ~d~%     Tempo: ~f~%" 
+    (format t "~%        A B C D E F G H I J K L M N ~%      1~A ~%      2~A~%      3~A~%      4~A~%      5~A~%      6~A~%      7~A~%      8~A~%      9~A~%     10~A~%     11~A~%     12~A~%     13~A~%     14~A~%~%     Jogador 1: ~%     Pontuacao: ~d~%     Peca Quadrado Pequeno: ~d~%     Peca Quadrado: ~d~%     Peca S: ~d~%~%     Jogador 2: ~%     Pontuacao: ~d~%     Peca Quadrado Pequeno: ~d~%     Peca Quadrado: ~d~%     Peca S: ~d~%~%" 
           (nth 0 (no-tabuleiro no)) 
           (nth 1 (no-tabuleiro no)) 
           (nth 2 (no-tabuleiro no)) 
@@ -122,11 +122,7 @@
           (no-pontuacao-jogador no 2)
           (nth 0 (no-pecas-jogador no 2))
           (nth 1 (no-pecas-jogador no 2))
-          (nth 2 (no-pecas-jogador no 2))
-          (obter-cortes-alfa) 
-          (obter-cortes-beta) 
-          (obter-nos-analisados)
-          tempo)
+          (nth 2 (no-pecas-jogador no 2)))
 )
 
 ;; letra-para-numero
@@ -239,24 +235,23 @@
 )
 
 ;; imprimir-jogada
-(defun imprimir-jogada (no jogador tempo)
+(defun imprimir-jogada (no jogador)
   (cond
     ((not (null (no-pai no)))
      (format t "~% > Jogador ~d jogou ~%" (trocar-jogador jogador))
     )
     (t (format t "~%*******************************************~%******* Tabuleiro do inicio do jogo *******~%*******************************************~%"))
   )
-  (imprimir-tabuleiro no tempo)
+  (imprimir-tabuleiro no)
 )
 
 ;; imprimir-resultados
-(defun imprimir-resultados (no tempoInicial)
+(defun imprimir-resultados (no)
 "Imprimir resultados do jogo, com o vencedor do mesmo"
   (progn
-    (format t  "~%*******************************************~%********* Chegamos ao fim do jogo *********~%*******************************************~%")
-    (imprimir-tabuleiro no tempoInicial)
-    (format t "~%     Vencedor: ~s~%     ~%*******************************************~%~%"            
+    (format t "~%     Vencedor: ~s~%"            
           (vencedor (no-pontuacao-jogador no 1) (no-pontuacao-jogador no 2)))
+    (format t  "~%*******************************************~%********* Chegamos ao fim do jogo *********~%*******************************************~%~%")
   )
 )
 
@@ -266,12 +261,17 @@
   (cond 
     ((or (and existeHumano (equal funcaoJogada "funcaoComputador")) (null (no-pai no))) 
        (progn 
-         (imprimir-jogada no jogador 0)
+         (imprimir-jogada no jogador)
          (escrever-estado-ficheiro no 0 jogador)
        )
     )
     (t (progn 
-         (imprimir-jogada no jogador (calcular-tempo tempoInicial))
+         (imprimir-jogada no jogador)
+         (format t "     Estatisticas da Jogada: ~%     Cortes Alfa: ~d~%     Cortes Beta: ~d~%     Nos Analisados: ~d~%     Tempo: ~f~%" 
+           (obter-cortes-alfa) 
+           (obter-cortes-beta) 
+           (obter-nos-analisados)
+           (calcular-tempo tempoInicial))
          (escrever-estado-ficheiro no (calcular-tempo tempoInicial) jogador)
        )
     )
@@ -404,7 +404,6 @@
            (y (numero-para-coordenada (parse-integer (subseq opcao 1) :junk-allowed t)))
            (listaCoordenadas (lista-coordenadas-peca peca (list x y)))
            (listaCoordenadasVertices (lista-coordenadas-vertices-peca peca (list x y))))
-      (format t " ~a" (no-pai no))
       (cond 
         ((and (valida-possivel-colocar-peca (no-tabuleiro no) listaCoordenadas jogador) (validar-primeira-jogada (no-tabuleiro no) jogador))  (list peca listaCoordenadas))
         ((and (valida-possivel-colocar-peca (no-tabuleiro no) listaCoordenadas jogador) (validar-lista-coordenadas-vertices-peca listaCoordenadasVertices (no-tabuleiro no) jogador) ) (list peca listaCoordenadas))
@@ -446,7 +445,7 @@
     (limpar-dados)
     (cond 
       ((no-solucaop no) 
-         (progn (imprimir-resultados no tempoInicial) (iniciar-jogo))
+         (progn (imprimir-resultados no) (iniciar-jogo))
          
       )
       ((null (verificar-possivel-jogar no jogador)) 
@@ -476,10 +475,10 @@
 ;; jogada-humano
 (defun jogada-humano (tempoLimite jogador existeHumano no &optional (tempoInicial 0))
   (progn
-    (imprimir-escrever no jogador (get-universal-time) existeHumano "funcaoJogador")
+    (imprimir-escrever no jogador tempoInicial existeHumano "funcaoJogador")
     (cond
       ((no-solucaop no) 
-         (imprimir-resultados no tempoInicial)
+         (imprimir-resultados no)
       )
       ((or (null (verificar-possivel-jogar no jogador)) (definir-passar-vez)) 
         (progn
@@ -489,7 +488,7 @@
       )
       (t (let* ((jogada (definir-peca jogador no))
                 (novoNo (criar-jogada no (substituir-valores-tabuleiro (no-tabuleiro no)  (cadr jogada)  jogador) (peca-para-numero (car jogada)) jogador)))
-           (format t "~% > Jogador ~d a fazer a sua jogada... ~%" (trocar-jogador jogador))
+           (format t "~% > Jogador ~d a fazer a sua jogada... ~%" jogador)
            (jogada-computador tempoLimite (trocar-jogador jogador) existeHumano novoNo tempoInicial)
          )
       )
